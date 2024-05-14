@@ -3,6 +3,10 @@ app = FastAPI()
 
 lista_livros = []
 
+@app.get("/")
+def home():
+    return {"message": "Hello World"}
+
 @app.get("/livros")
 def read_root():
     return lista_livros
@@ -26,4 +30,10 @@ def atualizar_livro(livro:str, livro_atualizado:str):
         lista_livros.remove(livro)
         lista_livros.append(livro_atualizado)
         return {"mensagem": "Livro atualizado com sucesso"}
+    return {"mensagem": "Livro não encontrado"}
+
+@app.get("/livros/{livro}")
+def buscar_livro(livro:str):
+    if livro in lista_livros:
+        return {"mensagem": "Livro encontrado, " + livro}
     return {"mensagem": "Livro não encontrado"}
