@@ -37,3 +37,25 @@ def buscar_livro(livro:str):
     if livro in lista_livros:
         return {"mensagem": "Livro encontrado, " + livro}
     return {"mensagem": "Livro não encontrado"}
+
+fake_livros_db = [{"nome_livro": "A Sociedade do Anel"}, {"nome_livro": "As Duas Torres"}, {"nome_livro": "O Retorno do Rei"}]
+
+@app.get("/livro/items")
+async def achar_livro(skip: int = 0, limit: int=10):
+    return fake_livros_db[skip: skip + limit]
+
+@app.get("/livro/items/{item_id}")
+async def pegar_livro(item_id: str, q: str | None = None, short: bool = False):
+    
+    livro = {"item_id": item_id}
+
+    
+    if q:
+        livro.update({"q":q})
+    if not short:
+        livro.update(
+            {
+                "description": "Lorem ipsum dolor sit amet"
+            }
+        )    
+    return livro
